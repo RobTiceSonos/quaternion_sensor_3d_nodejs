@@ -6,7 +6,7 @@
         body {
             margin: 0;
         }
-        
+
         canvas {
             display: block;
         }
@@ -18,11 +18,11 @@
     <script>
         var camera, scene, renderer;
         var geometry, material, mesh;
-        
+
         init();
         animate();
 
-        function init() 
+        function init()
         {
             camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
             camera.position.z = 1;
@@ -42,19 +42,19 @@
             document.body.appendChild(renderer.domElement);
         }
 
-        function animate() 
+        function animate()
         {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
         }
 
-        var exampleSocket = new WebSocket("ws://127.0.0.1:8080/");
-        
+        var exampleSocket = new WebSocket("ws://pi06c.local:8080/");
+
         exampleSocket.onmessage = function(event) {
             var jsonObj = JSON.parse(event.data);
-            
+
             // You'll need to edit the order of the quaternions below so that the 3D object matches up with your sensor.
-            var targetQuaternion = new THREE.Quaternion(jsonObj.quat_z, jsonObj.quat_y, jsonObj.quat_w, jsonObj.quat_x);       
+            var targetQuaternion = new THREE.Quaternion(jsonObj.quat_z, jsonObj.quat_y, jsonObj.quat_w, jsonObj.quat_x);
             mesh.quaternion.slerp(targetQuaternion, 1);
         }
     </script>
